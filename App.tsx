@@ -2,15 +2,16 @@ import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
+import {useTheme} from './src/hooks/useTheme';
 import RootNavigator from './src/navigation/RootNavigator';
+import {ThemeProvider} from './src/context/ThemeContext';
 
-// Create a client
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       retry: 2,
       refetchOnWindowFocus: false,
-      staleTime: 60 * 1000, // 1 minute
+      staleTime: 60 * 1000,
     },
     mutations: {
       retry: 1,
@@ -18,13 +19,52 @@ const queryClient = new QueryClient({
   },
 });
 
+function AppContent() {
+  const {theme, isDark, typography} = useTheme();
+
+  return (
+    <NavigationContainer
+      theme={{
+        dark: isDark,
+        colors: {
+          primary: theme.primary.main,
+          background: theme.background.primary,
+          card: theme.surface.primary,
+          text: theme.text.primary,
+          border: theme.border.primary,
+          notification: theme.error.main,
+        },
+        fonts: {
+          regular: {
+            fontFamily: typography.fontFamily.regular,
+            fontWeight: typography.fontWeight.regular,
+          },
+          medium: {
+            fontFamily: typography.fontFamily.medium,
+            fontWeight: typography.fontWeight.medium,
+          },
+          bold: {
+            fontFamily: typography.fontFamily.semiBold,
+            fontWeight: typography.fontWeight.bold,
+          },
+          heavy: {
+            fontFamily: typography.fontFamily.bold,
+            fontWeight: typography.fontWeight.extraBold,
+          },
+        },
+      }}>
+      <RootNavigator />
+    </NavigationContainer>
+  );
+}
+
 function App() {
   return (
     <SafeAreaProvider>
       <QueryClientProvider client={queryClient}>
-        <NavigationContainer>
-          <RootNavigator />
-        </NavigationContainer>
+        <ThemeProvider>
+          <AppContent />
+        </ThemeProvider>
       </QueryClientProvider>
     </SafeAreaProvider>
   );
