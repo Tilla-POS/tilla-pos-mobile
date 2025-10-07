@@ -1,202 +1,213 @@
 import React, {useState} from 'react';
-import {
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  StyleSheet,
-  Alert,
-  ActivityIndicator,
-  KeyboardAvoidingView,
-  Platform,
-} from 'react-native';
+import {KeyboardAvoidingView, Platform, StyleSheet, View} from 'react-native';
 import {useAuth} from '../hooks/useAuth';
+import {useTheme} from '../hooks/useTheme';
+import {ThemedView} from '../components/ui/ThemedView';
+import {ThemedText} from '../components/ui/ThemedText';
+import {ThemedInput} from '../components/ui/ThemedInput';
+import {ThemedButton} from '../components/ui/ThemedButton';
 import {UserPlus} from 'lucide-react-native';
 
 const RegisterScreen = ({navigation}: any) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
   const [phone, setPhone] = useState('');
+  const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [errors, setErrors] = useState<any>({});
   const {register, registerLoading} = useAuth();
+  const {theme} = useTheme();
 
   const handleRegister = async () => {
-    if (!name || !email || !password || !confirmPassword || !phone) {
-      Alert.alert('Error', 'Please fill in all fields');
+    setErrors({});
+
+    if (!name || !email || !password || !confirmPassword) {
+      setErrors({
+        name: !name ? 'Name is required' : undefined,
+        email: !email ? 'Email is required' : undefined,
+        password: !password ? 'Password is required' : undefined,
+        confirmPassword: !confirmPassword
+          ? 'Confirm password is required'
+          : undefined,
+      });
       return;
     }
 
     if (password !== confirmPassword) {
-      Alert.alert('Error', 'Passwords do not match');
+      setErrors({confirmPassword: 'Passwords do not match'});
       return;
     }
 
     if (password.length < 6) {
-      Alert.alert('Error', 'Password must be at least 6 characters');
+      setErrors({password: 'Password must be at least 6 characters'});
+      return;
+    }
+
+    if (phone && !/^\+?[1-9]\d{1,14}$/.test(phone)) {
+      setErrors({phone: 'Invalid phone number format'});
       return;
     }
 
     try {
       await register({name, email, password, phone});
     } catch (error: any) {
-      Alert.alert(
-        'Registration Failed',
-        error.response?.data?.message || 'Please try again',
-      );
+      setErrors({
+        general:
+          error.response?.data?.message ||
+          'Registration failed. Please try again.',
+      });
     }
   };
 
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      style={styles.container}>
-      <View style={styles.content}>
-        <View style={styles.iconContainer}>
-          <UserPlus color="#007AFF" size={64} />
+    <ThemedView style={styles.container}>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={styles.content}>
+        <View style={styles.header}>
+          <View
+            style={[
+              styles.iconContainer,
+              {backgroundColor: theme.primary.main + '20'},
+            ]}>
+            <UserPlus color={theme.primary.main} size={48} />
+          </View>
+
+          <ThemedText variant="h2" style={styles.title}>
+            Create Account
+          </ThemedText>
+          <ThemedText color="secondary" style={styles.subtitle}>
+            Sign up to get started
+          </ThemedText>
         </View>
 
-        <Text style={styles.title}>Create Account</Text>
-        <Text style={styles.subtitle}>Sign up to get started</Text>
-
         <View style={styles.form}>
-          <TextInput
-            style={styles.input}
+          <ThemedInput
             placeholder="Full Name"
             value={name}
-            onChangeText={setName}
+            onChangeText={text => {
+              setName(text);
+              setErrors({...errors, name: undefined});
+            }}
             editable={!registerLoading}
+            error={errors.name}
           />
 
-          <TextInput
-            style={styles.input}
+          <ThemedInput
             placeholder="Email"
             value={email}
-            onChangeText={setEmail}
+            onChangeText={text => {
+              setEmail(text);
+              setErrors({...errors, email: undefined});
+            }}
             autoCapitalize="none"
             keyboardType="email-address"
             editable={!registerLoading}
+            error={errors.email}
           />
 
-          <TextInput
-            style={styles.input}
+          <ThemedInput
             placeholder="Phone Number"
             value={phone}
-            onChangeText={setPhone}
-            autoCapitalize="none"
+            onChangeText={text => {
+              setPhone(text);
+              setErrors({...errors, phone: undefined});
+            }}
             keyboardType="phone-pad"
             editable={!registerLoading}
+            error={errors.phone}
           />
 
-          <TextInput
-            style={styles.input}
+          <ThemedInput
             placeholder="Password"
             value={password}
-            onChangeText={setPassword}
+            onChangeText={text => {
+              setPassword(text);
+              setErrors({...errors, password: undefined});
+            }}
             secureTextEntry
             editable={!registerLoading}
+            error={errors.password}
           />
 
-          <TextInput
-            style={styles.input}
+          <ThemedInput
             placeholder="Confirm Password"
             value={confirmPassword}
-            onChangeText={setConfirmPassword}
+            onChangeText={text => {
+              setConfirmPassword(text);
+              setErrors({...errors, confirmPassword: undefined});
+            }}
             secureTextEntry
             editable={!registerLoading}
+            error={errors.confirmPassword}
           />
 
-          <TouchableOpacity
-            style={[styles.button, registerLoading && styles.buttonDisabled]}
-            onPress={handleRegister}
-            disabled={registerLoading}>
-            {registerLoading ? (
-              <ActivityIndicator color="#fff" />
-            ) : (
-              <Text style={styles.buttonText}>Register</Text>
-            )}
-          </TouchableOpacity>
+          {errors.general && (
+            <ThemedText
+              variant="caption"
+              style={[styles.error, {color: theme.error.main}]}>
+              {errors.general}
+            </ThemedText>
+          )}
 
-          <TouchableOpacity
-            style={styles.linkButton}
+          <ThemedButton
+            title="Register"
+            onPress={handleRegister}
+            loading={registerLoading}
+            fullWidth
+            style={styles.registerButton}
+          />
+
+          <ThemedButton
+            title="Already have an account? Login"
+            variant="ghost"
             onPress={() => navigation.navigate('Login')}
-            disabled={registerLoading}>
-            <Text style={styles.linkText}>
-              Already have an account?{' '}
-              <Text style={styles.linkTextBold}>Login</Text>
-            </Text>
-          </TouchableOpacity>
+            disabled={registerLoading}
+            fullWidth
+          />
         </View>
-      </View>
-    </KeyboardAvoidingView>
+      </KeyboardAvoidingView>
+    </ThemedView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
   },
   content: {
     flex: 1,
     justifyContent: 'center',
     paddingHorizontal: 24,
   },
+  header: {
+    alignItems: 'center',
+    marginBottom: 32,
+  },
   iconContainer: {
+    width: 96,
+    height: 96,
+    borderRadius: 48,
+    justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 24,
   },
   title: {
-    fontSize: 32,
-    fontWeight: 'bold',
-    textAlign: 'center',
     marginBottom: 8,
-    color: '#000',
   },
   subtitle: {
-    fontSize: 16,
-    textAlign: 'center',
-    color: '#666',
-    marginBottom: 32,
+    marginBottom: 8,
   },
   form: {
     width: '100%',
   },
-  input: {
-    backgroundColor: '#F5F5F5',
-    borderRadius: 12,
-    padding: 16,
-    fontSize: 16,
+  error: {
     marginBottom: 16,
-    borderWidth: 1,
-    borderColor: '#E5E5E5',
+    textAlign: 'center',
   },
-  button: {
-    backgroundColor: '#007AFF',
-    borderRadius: 12,
-    padding: 16,
-    alignItems: 'center',
+  registerButton: {
     marginTop: 8,
-  },
-  buttonDisabled: {
-    opacity: 0.6,
-  },
-  buttonText: {
-    color: '#fff',
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  linkButton: {
-    marginTop: 16,
-    alignItems: 'center',
-  },
-  linkText: {
-    color: '#666',
-    fontSize: 14,
-  },
-  linkTextBold: {
-    color: '#007AFF',
-    fontWeight: 'bold',
+    marginBottom: 16,
   },
 });
 
