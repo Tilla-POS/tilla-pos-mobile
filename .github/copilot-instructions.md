@@ -1,72 +1,83 @@
-# Copilot Instructions for TillaPos Mobile
+# Copilot Instructions — TillaPos Mobile
 
-## Project Overview
-This is a React Native 0.79.2 TypeScript project for a Point of Sale (POS) system mobile application. The project uses the latest React Native architecture with New Architecture (Fabric/Turbo Modules) support enabled by default.
+This is a React Native 0.79.x TypeScript mobile POS application with New Architecture (Fabric/Hermes) enabled. Use these instructions to understand the project's architecture, patterns, and workflows for effective development.
 
-## Key Architecture Patterns
+## Architecture Overview
 
-### React Native Setup
-- **TypeScript**: Fully configured with `@react-native/typescript-config`
-- **New Architecture**: Fabric and Hermes enabled by default in both platforms
-- **Bundle ID**: `com.tillapos` for Android, `TillaPos` for iOS
-- **Entry Point**: `App.tsx` is the main component, registered as "TillaPos"
+**Data Flow**: App.tsx → QueryClient + ThemeProvider → RootNavigator → Auth-gated navigation (AuthStack vs BottomTabNavigator)
+**State Management**: TanStack Query for server state, AsyncStorage for persistence, React Context for theming/auth
+**Styling**: Custom design system with theme tokens (`src/theme/`) supporting light/dark modes
+**API Layer**: Axios with request/response interceptors for token management and consistent error handling
 
-### Native Platform Structure
-- **Android**: Kotlin-based with `MainActivity.kt` and `MainApplication.kt` in `com.tillapos` package
-- **iOS**: Swift-based with modern `AppDelegate.swift` using `ReactNativeDelegate` pattern
-- **CocoaPods**: Managed via Bundler with specific version constraints for stability
+## Essential Development Commands
 
-## Development Workflows
-
-### Essential Commands
 ```bash
-# Install iOS dependencies (required after cloning or updating native deps)
-bundle install && bundle exec pod install
+# Initial setup (after clone or native dep changes)
+npm install
+bundle install && bundle exec pod install  # iOS only
 
-# Start Metro bundler
-npm start
+# Development workflow
+npm start                 # Metro bundler
+npm run android          # Build and run Android
+npm run ios             # Build and run iOS (after pod install)
 
-# Run on platforms
-npm run android  # Android
-npm run ios      # iOS
-
-# Development utilities
-npm run lint     # ESLint with @react-native config
-npm test         # Jest with react-native preset
+# Quality checks
+npm run lint            # ESLint with @react-native config
+npm test               # Jest with react-native preset
 ```
 
-### Platform-Specific Setup
-- **iOS**: Always run `bundle exec pod install` after native dependency changes
-- **Android**: Uses Gradle with standard React Native build configuration
-- **Ruby Dependencies**: Specific version constraints in `Gemfile` to avoid build issues
+## Key Architectural Patterns
 
-## Code Conventions
+**Navigation Structure**:
 
-### Styling & Formatting
-- **Prettier Config**: Arrow parens avoided, bracket same line, no bracket spacing, single quotes, trailing commas
-- **ESLint**: Uses `@react-native` configuration for React Native best practices
-- **TypeScript**: Strict mode with React Native optimized settings
+- `RootNavigator.tsx` handles auth-gated routing using `useAuth()` hook
+- Authenticated: `BottomTabNavigator` (Cashier/Inventory/Reports/Receipts/Profile)
+- Unauthenticated: `AuthStack` (Login/Register)
 
-### Component Patterns
-- Functional components with TypeScript interfaces for props
-- `useColorScheme` hook for dark/light mode theming
-- React Native's built-in `Colors` from `react-native/Libraries/NewAppScreen`
+**Theme System**:
 
-## Testing Strategy
-- **Jest**: Configured with `react-native` preset
-- **React Test Renderer**: Used for component snapshot testing
-- Test files in `__tests__/` directory following React Native conventions
+- `ThemeContext` manages light/dark/system modes with AsyncStorage persistence
+- `useTheme()` hook provides theme tokens + utilities (typography, spacing, shadows, etc.)
+- All colors/spacing from `src/theme/` tokens, not hardcoded values
 
-## Build & Deployment Notes
-- **Metro**: Default configuration with React Native 0.79.2
-- **Babel**: Uses `@react-native/babel-preset` for optimal bundling
-- **Node Version**: Requires Node.js >= 18
-- **New Architecture**: Ready for Fabric and TurboModules when needed
+**API Architecture**:
 
-## File Organization
-- Root-level `App.tsx` serves as main entry point
-- Platform-specific code in `android/` and `ios/` directories
-- Native modules auto-linked via `PackageList` (Android) and React Native pods (iOS)
-- No custom source directory structure yet - follows standard React Native bootstrap
+- `src/services/api.ts`: Axios instance with automatic token injection via interceptors
+- `src/services/authService.ts`: Authentication methods using typed responses
+- `useAuth` hook: TanStack Query integration for auth state management with optimistic updates
 
-When working on this codebase, prioritize React Native best practices, maintain TypeScript strict typing, and ensure both iOS and Android compatibility. The project is set up for modern React Native development with all current tooling standards.
+**Environment Configuration**:
+
+- `src/config/env.config.ts`: Typed config object from `@env` module
+- `types/env.d.ts`: TypeScript declarations for environment variables
+- Babel plugin `react-native-dotenv` for `.env` file support
+
+## Project-Specific Conventions
+
+1. **Component Structure**: All screens are functional components in `src/screens/` with StyleSheet.create
+2. **Icon Usage**: Lucide React Native icons with consistent props pattern (`{color, size}: IconProps`)
+3. **Styling Approach**: Use `useTheme()` hook, avoid hardcoded colors/spacing
+4. **Network Calls**: Centralize in `src/services/`, use TanStack Query for caching/synchronization
+5. **Type Safety**: Strict TypeScript with interfaces for all API responses and component props
+
+## Critical Integration Points
+
+**Theme Integration**: Components must use `const {theme, isDark, typography} = useTheme()` instead of direct theme imports
+**Navigation Props**: Use navigation prop typing from React Navigation v7 patterns
+**API Error Handling**: Response interceptor in `api.ts` handles token refresh and error standardization
+**AsyncStorage Keys**: Follow existing patterns (e.g., `@app_theme_mode`, `accessToken`)
+
+## Development Workflow
+
+1. **Native Changes**: Always run `bundle exec pod install` before iOS development
+2. **State Updates**: Use TanStack Query mutations with `onSuccess` callbacks for cache invalidation
+3. **Styling**: Reference existing screen implementations for layout patterns
+4. **Environment**: Set variables in `.env` file, type in `env.d.ts`, consume via `Config` object
+
+## Key Files for Reference
+
+- **App Structure**: `App.tsx`, `src/navigation/RootNavigator.tsx`
+- **Authentication**: `src/hooks/useAuth.ts`, `src/services/authService.ts`
+- **Theming**: `src/context/ThemeContext.tsx`, `src/hooks/useTheme.ts`
+- **API Layer**: `src/services/api.ts`, `src/config/env.config.ts`
+- **Screens**: `src/screens/CashierScreen.tsx` (simple example), `src/navigation/BottomTabNavigator.tsx` (icons/structure)

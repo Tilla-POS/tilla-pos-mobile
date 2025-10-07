@@ -5,6 +5,8 @@ import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
 import {useTheme} from './src/hooks/useTheme';
 import RootNavigator from './src/navigation/RootNavigator';
 import {ThemeProvider} from './src/context/ThemeContext';
+import {Provider} from 'react-redux';
+import {store} from './src/redux/store';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -63,7 +65,9 @@ function App() {
     <SafeAreaProvider>
       <QueryClientProvider client={queryClient}>
         <ThemeProvider>
-          <AppContent />
+          <Provider store={store}>
+            <AppContent />
+          </Provider>
         </ThemeProvider>
       </QueryClientProvider>
     </SafeAreaProvider>
