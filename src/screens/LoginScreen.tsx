@@ -29,6 +29,7 @@ const LoginScreen = ({navigation}: any) => {
     try {
       await login({email, password});
     } catch (error: any) {
+      console.error('Login error:', error);
       setErrors({
         general: error.response?.data?.message || 'Invalid credentials',
       });
