@@ -1,6 +1,8 @@
 import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 
+export const PROFILE_SCREEN = 'Profile'; // For navigation reference
+
 const ProfileScreen = () => {
   return (
     <View style={styles.container}>

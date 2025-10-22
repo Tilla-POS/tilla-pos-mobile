@@ -1,6 +1,8 @@
 import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 
+export const INVENTORY_SCREEN = 'Inventory'; // For navigation reference
+
 const InventoryScreen = () => {
   return (
     <View style={styles.container}>

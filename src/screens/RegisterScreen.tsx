@@ -7,9 +7,13 @@ import {ThemedText} from '../components/ui/ThemedText';
 import {ThemedInput} from '../components/ui/ThemedInput';
 import {ThemedButton} from '../components/ui/ThemedButton';
 import {UserPlus} from 'lucide-react-native';
+import { CREATE_BUSINESS_SCREEN } from './CreateBusinessScreen';
+import { LOGIN_SCREEN } from './LoginScreen';
+
+export const REGISTER_SCREEN = 'Register'; // For navigation reference
 
 const RegisterScreen = ({navigation}: any) => {
-  const [name, setName] = useState('');
+  const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
@@ -21,9 +25,9 @@ const RegisterScreen = ({navigation}: any) => {
   const handleRegister = async () => {
     setErrors({});
 
-    if (!name || !email || !password || !confirmPassword) {
+    if (!username || !email || !password || !confirmPassword) {
       setErrors({
-        name: !name ? 'Name is required' : undefined,
+        username: !username ? 'Name is required' : undefined,
         email: !email ? 'Email is required' : undefined,
         password: !password ? 'Password is required' : undefined,
         confirmPassword: !confirmPassword
@@ -49,8 +53,15 @@ const RegisterScreen = ({navigation}: any) => {
     }
 
     try {
-      await register({name, email, password, phone});
+      console.log(`${REGISTER_SCREEN}.handleRegister: Attempting registration for ${email}`);
+      const response = await register({username, email, password, phone});
+      // If registration is successful, navigation to CreateBusinessScreen with state email and shopkeeperId (userId)
+      navigation.navigate(CREATE_BUSINESS_SCREEN, {
+        email: email,
+        shopkeeperId: response.data.id,
+      });
     } catch (error: any) {
+      console.log(`${REGISTER_SCREEN}.handleRegister: Registration error:`, error);
       setErrors({
         general:
           error.response?.data?.message ||
@@ -84,13 +95,13 @@ const RegisterScreen = ({navigation}: any) => {
         <View style={styles.form}>
           <ThemedInput
             placeholder="Full Name"
-            value={name}
+            value={username}
             onChangeText={text => {
-              setName(text);
-              setErrors({...errors, name: undefined});
+              setUsername(text);
+              setErrors({...errors, username: undefined});
             }}
             editable={!registerLoading}
-            error={errors.name}
+            error={errors.username}
           />
 
           <ThemedInput
@@ -161,7 +172,7 @@ const RegisterScreen = ({navigation}: any) => {
           <ThemedButton
             title="Already have an account? Login"
             variant="ghost"
-            onPress={() => navigation.navigate('Login')}
+            onPress={() => navigation.navigate(LOGIN_SCREEN)}
             disabled={registerLoading}
             fullWidth
           />

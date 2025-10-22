@@ -1,7 +1,7 @@
 import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import ReceiptsScreen from '../screens/ReceiptsScreen';
-import ProfileScreen from '../screens/ProfileScreen';
+import ReceiptsScreen, {RECEIPTS_SCREEN} from '../screens/ReceiptsScreen';
+import ProfileScreen, {PROFILE_SCREEN} from '../screens/ProfileScreen';
 import {
   User,
   ChartNoAxesCombined,
@@ -9,9 +9,9 @@ import {
   HandCoins,
   Package,
 } from 'lucide-react-native';
-import ReportScreen from '../screens/ReportScreen';
-import CashierScreen from '../screens/CashierScreen';
-import InventoryScreen from '../screens/InventoryScreen';
+import ReportScreen, {REPORT_SCREEN} from '../screens/ReportScreen';
+import CashierScreen, {CASHIER_SCREEN} from '../screens/CashierScreen';
+import InventoryScreen, {INVENTORY_SCREEN} from '../screens/InventoryScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -37,7 +37,7 @@ const BottomTabNavigator = () => {
   return (
     <Tab.Navigator>
       <Tab.Screen
-        name="Reports"
+        name={REPORT_SCREEN}
         component={ReportScreen}
         options={{
           tabBarIcon: renderReportIcon,
@@ -45,7 +45,7 @@ const BottomTabNavigator = () => {
         }}
       />
       <Tab.Screen
-        name="Receipts"
+        name={RECEIPTS_SCREEN}
         component={ReceiptsScreen}
         options={{
           tabBarIcon: renderReceiptIcon,
@@ -53,7 +53,7 @@ const BottomTabNavigator = () => {
         }}
       />
       <Tab.Screen
-        name="Cashier"
+        name={CASHIER_SCREEN}
         component={CashierScreen}
         options={{
           tabBarIcon: renderCashierIcon,
@@ -61,7 +61,7 @@ const BottomTabNavigator = () => {
         }}
       />
       <Tab.Screen
-        name="Inventory"
+        name={INVENTORY_SCREEN}
         component={InventoryScreen}
         options={{
           tabBarIcon: renderInventoryIcon,
@@ -69,7 +69,7 @@ const BottomTabNavigator = () => {
         }}
       />
       <Tab.Screen
-        name="Profile"
+        name={PROFILE_SCREEN}
         component={ProfileScreen}
         options={{
           tabBarIcon: renderProfileIcon,

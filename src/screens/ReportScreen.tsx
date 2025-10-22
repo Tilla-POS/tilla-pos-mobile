@@ -6,6 +6,8 @@ import {ThemedText} from '../components/ui/ThemedText';
 import {ThemedCard} from '../components/ui/ThemedCard';
 import {Sun, Moon, Monitor} from 'lucide-react-native';
 
+export const REPORT_SCREEN = 'Report'; // For navigation reference
+
 const ReportScreen = () => {
   const {theme, mode, setTheme, spacing} = useTheme();
 

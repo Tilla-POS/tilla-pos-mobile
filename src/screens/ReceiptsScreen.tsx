@@ -1,6 +1,8 @@
 import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 
+export const RECEIPTS_SCREEN = 'Receipts'; // For navigation reference
+
 const ReceiptsScreen = () => {
   return (
     <View style={styles.container}>

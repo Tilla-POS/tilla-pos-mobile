@@ -29,7 +29,7 @@ export const ThemedInput: React.FC<ThemedInputProps> = ({
           {
             backgroundColor: theme.input.background,
             borderColor: error ? theme.border.error : theme.input.border,
-            borderRadius: radius.lg,
+            borderRadius: radius.sm,
             color: theme.input.text,
             paddingHorizontal: spacing[4],
             paddingVertical: spacing[3],

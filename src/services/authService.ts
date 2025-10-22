@@ -2,6 +2,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import api, {ApiResponse} from './api';
 import {deviceInfoService} from './deviceInfoService';
 import {locationService} from './locationService';
+import {User} from './userService';
+import {Business} from './businessService';
 
 export interface Device {
   name: string;
@@ -34,33 +36,10 @@ export interface LoginCredentials {
 }
 
 export interface RegisterCredentials {
-  name: string;
+  username: string;
   email: string;
   phone: string;
   password: string;
-}
-
-export interface Business {
-  id: string;
-  name: string;
-  currency: string;
-  slug: string;
-  image: string;
-  createdAt: string;
-  updatedAt: string;
-  deletedAt: string | null;
-  isActive: true;
-}
-
-export interface User {
-  id: string;
-  username: string;
-  phone: string;
-  email: string;
-  createdAt: string;
-  updatedAt: string;
-  deletedAt: string | null;
-  business: Business | null;
 }
 
 export interface AuthResponse {
@@ -68,6 +47,27 @@ export interface AuthResponse {
   refreshToken: string;
   tokenType: string;
   expiresIn: number;
+}
+
+export interface FileData {
+  uri: string;
+  name: string;
+  type: string;
+}
+
+export interface CreateBusinessCredentials {
+  name: string;
+  slug: string;
+  currency: string;
+  email: string;
+  shopkeeperId: string;
+  businessTypeId: string;
+  logo?: FileData;
+}
+
+export interface VerifyOTPCredentials {
+  code: string;
+  email: string;
 }
 
 export const authService = {
@@ -137,18 +137,13 @@ export const authService = {
 
   register: async (
     credentials: RegisterCredentials,
-  ): Promise<ApiResponse<AuthResponse>> => {
-    const response = await api.post<ApiResponse<AuthResponse>>(
+  ): Promise<ApiResponse<User>> => {
+    console.log('authService.register: Registering user with', credentials);
+    const response = await api.post<ApiResponse<User>>(
       '/auth/signup',
       credentials,
     );
-    const {data} = response.data;
-
-    await AsyncStorage.setItem('accessToken', data.accessToken);
-    await AsyncStorage.setItem('refreshToken', data.refreshToken);
-    await AsyncStorage.setItem('tokenType', data.tokenType);
-    await AsyncStorage.setItem('expiresIn', data.expiresIn.toString());
-
+    console.log('authService.register: Registration response:', response.data);
     return response.data;
   },
 
@@ -162,6 +157,37 @@ export const authService = {
     }
   },
 
+  createBusiness: async (
+    credentials: CreateBusinessCredentials,
+  ): Promise<ApiResponse<Business>> => {
+    const formData = new FormData();
+    formData.append('name', credentials.name);
+    formData.append('slug', credentials.slug);
+    formData.append('currency', credentials.currency);
+    formData.append('email', credentials.email);
+    formData.append('shopkeeperId', credentials.shopkeeperId);
+    formData.append('businessTypeId', credentials.businessTypeId);
+    if (credentials.logo) {
+      formData.append('image', {
+        uri: credentials.logo.uri,
+        name: credentials.logo.name,
+        type: credentials.logo.type,
+      } as any);
+    }
+    console.log('authService.createBusiness: Creating business with', credentials);
+    const response = await api.post<ApiResponse<Business>>(
+      'auth/create-business',
+      formData,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      },
+    );
+    console.log('authService.createBusiness: Create business response:', response.data);
+    return response.data;
+  },
+
   getCurrentUser: async (): Promise<User | null> => {
     const response = await api.get('/users/me');
     return response.data;
@@ -169,5 +195,78 @@ export const authService = {
 
   getAccessToken: async (): Promise<string | null> => {
     return await AsyncStorage.getItem('accessToken');
+  },
+
+  verifyOTP: async (
+    credentials: VerifyOTPCredentials,
+  ): Promise<ApiResponse<AuthResponse>> => {
+    // Get device info
+    const deviceInfo = await deviceInfoService.getDeviceInfo();
+
+    // Get location (try GPS first, fallback to IP)
+    let locationInfo = await locationService.getCompleteLocation();
+
+    const device: Device = {
+      name: deviceInfo.deviceName || 'Unknown',
+      type: deviceInfo.deviceType,
+      brand: deviceInfo.brand,
+      model: deviceInfo.model,
+      deviceId: deviceInfo.deviceId,
+      appVersion: deviceInfo.appVersion,
+      isEmulator: deviceInfo.isEmulator,
+      isTablet: deviceInfo.isTablet,
+      systemName: deviceInfo.systemName,
+      systemVersion: deviceInfo.systemVersion,
+      userAgent: deviceInfo.userAgent,
+      trusted: true, // For simplicity, mark all as trusted
+    };
+
+    let location: Location | null = null;
+    if (locationInfo) {
+      location = {
+        country: locationInfo.address
+          ? locationInfo.address.country || 'Unknown'
+          : 'Unknown',
+        region: locationInfo.address
+          ? locationInfo.address.region || 'Unknown'
+          : 'Unknown',
+        city: locationInfo.address
+          ? locationInfo.address.city || 'Unknown'
+          : 'Unknown',
+        postalCode: locationInfo.address
+          ? locationInfo.address.postalCode || 'Unknown'
+          : 'Unknown',
+        countryCode: locationInfo.address
+          ? locationInfo.address.countryCode || 'XX'
+          : 'XX',
+        formattedAddress: locationInfo.address
+          ? locationInfo.address.formattedAddress || 'Unknown'
+          : 'Unknown',
+        latitude: locationInfo.latitude || 0,
+        longitude: locationInfo.longitude || 0,
+      };
+    }
+    console.log('authService.verifyOTP: Verifying OTP with', credentials);
+    const response = await api.post<ApiResponse<AuthResponse>>(
+      '/auth/otp-verify',
+      {...credentials, device, location},
+    );
+    const {data} = response.data;
+    console.log('authService.verifyOTP: Store accessToken and refreshToken', response.data);
+    await AsyncStorage.setItem('accessToken', data.accessToken);
+    await AsyncStorage.setItem('refreshToken', data.refreshToken);
+    await AsyncStorage.setItem('tokenType', data.tokenType);
+    await AsyncStorage.setItem('expiresIn', data.expiresIn.toString());
+    console.log('authService.verifyOTP: OTP verification response:', response.data);
+    return response.data;
+  },
+
+  resendOTP: async (data: {
+    email: string;
+  }): Promise<ApiResponse<{sent: boolean; message: string}>> => {
+    const response = await api.post<
+      ApiResponse<{sent: boolean; message: string}>
+    >('/auth/resend-otp', data);
+    return response.data;
   },
 };

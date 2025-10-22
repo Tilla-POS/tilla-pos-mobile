@@ -7,6 +7,9 @@ import {ThemedText} from '../components/ui/ThemedText';
 import {ThemedInput} from '../components/ui/ThemedInput';
 import {ThemedButton} from '../components/ui/ThemedButton';
 import {LogIn} from 'lucide-react-native';
+import { REGISTER_SCREEN } from './RegisterScreen';
+
+export const LOGIN_SCREEN = 'Login'; // For navigation reference
 
 const LoginScreen = ({navigation}: any) => {
   const [email, setEmail] = useState('');
@@ -103,7 +106,7 @@ const LoginScreen = ({navigation}: any) => {
           <ThemedButton
             title="Don't have an account? Register"
             variant="ghost"
-            onPress={() => navigation.navigate('Register')}
+            onPress={() => navigation.navigate(REGISTER_SCREEN)}
             disabled={loginLoading}
             fullWidth
           />

@@ -53,7 +53,7 @@ export const ThemedButton: React.FC<ThemedButtonProps> = ({
         {
           backgroundColor: buttonColors.background,
           borderColor: buttonColors.border,
-          borderRadius: radius.lg,
+          borderRadius: radius.sm,
         },
         fullWidth && styles.fullWidth,
         (disabled || loading) && styles.disabled,

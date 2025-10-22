@@ -1,6 +1,8 @@
 import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 
+export const CASHIER_SCREEN = 'Cashier'; // For navigation reference
+
 const CashierScreen = () => {
   return (
     <View style={styles.container}>
