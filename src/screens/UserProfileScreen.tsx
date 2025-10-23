@@ -12,10 +12,11 @@ import {ThemedIconButton} from '../components/ui/ThemedIconButton';
 import {ThemedText} from '../components/ui/ThemedText';
 import {ThemedAvatar} from '../components/ui/ThemedAvatar';
 import {spacing} from '../theme';
-import MenuGroup from '../components/specifics/profile/MenuGropu';
-import InfoItem from '../components/specifics/profile/UserProfile/InfoItem';
+import MenuGroup from '../components/common/MenuGropu';
+import InfoItem from '../components/common/InfoItem';
 import {ThemedIcon} from '../components/ui/ThemedIcon';
 import {useUser} from '../hooks/useUser';
+import CommonError from '../components/common/CommonError';
 
 export const USER_PROFILE_SCREEN = 'UserProfile'; // For navigation reference
 
@@ -38,27 +39,18 @@ const UserProfileScreen = () => {
     );
   } else if (currentUserError) {
     content = (
-      <View style={styles.loadingContainer}>
-        <ThemedText variant="header" color="primary">
-          Failed to load user data.
-        </ThemedText>
-        <ThemedIconButton
-          name="RefreshCcw"
-          onPress={() => refetchCurrentUser()}
-        />
-      </View>
+      <CommonError
+        title="Failed to load use data"
+        refetch={refetchCurrentUser}
+      />
     );
   } else if (!currentUser) {
     content = (
-      <View style={styles.loadingContainer}>
-        <ThemedText variant="header" color="primary">
-          No user data available.
-        </ThemedText>
-        <ThemedIconButton
-          name="RefreshCcw"
-          onPress={() => refetchCurrentUser()}
-        />
-      </View>
+      <CommonError
+        title="No user data available."
+        subTitle="Please check your internet connection and try again."
+        refetch={refetchCurrentUser}
+      />
     );
   } else {
     content = (

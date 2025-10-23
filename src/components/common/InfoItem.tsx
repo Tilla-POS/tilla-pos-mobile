@@ -1,6 +1,6 @@
 import {StyleSheet, View} from 'react-native';
-import {useTheme} from '../../../../hooks/useTheme';
-import {ThemedText} from '../../../ui/ThemedText';
+import {useTheme} from '../../hooks/useTheme';
+import {ThemedText} from '../ui/ThemedText';
 
 interface InfoItemProps {
   // Define your props here

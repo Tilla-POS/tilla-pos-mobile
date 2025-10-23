@@ -1,6 +1,6 @@
 import {View} from 'react-native';
-import {ThemedText} from '../../ui/ThemedText';
-import {useTheme} from '../../../hooks/useTheme';
+import {ThemedText} from '../ui/ThemedText';
+import {useTheme} from '../../hooks/useTheme';
 
 type MenuGroupProps = {
   title: string;

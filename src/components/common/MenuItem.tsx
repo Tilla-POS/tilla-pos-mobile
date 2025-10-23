@@ -1,7 +1,7 @@
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
-import {ThemedText} from '../../ui/ThemedText';
-import {spacing} from '../../../theme';
-import {useTheme} from '../../../hooks/useTheme';
+import {ThemedText} from '../ui/ThemedText';
+import {spacing} from '../../theme';
+import {useTheme} from '../../hooks/useTheme';
 
 type MenuItemProps = {
   title: string;
