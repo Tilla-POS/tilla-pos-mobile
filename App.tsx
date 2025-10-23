@@ -31,7 +31,7 @@ function AppContent() {
         colors: {
           primary: theme.primary.main,
           background: theme.background.primary,
-          card: theme.surface.primary,
+          card: theme.background.primary,
           text: theme.text.primary,
           border: theme.border.primary,
           notification: theme.error.main,

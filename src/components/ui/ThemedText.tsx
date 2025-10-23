@@ -3,7 +3,7 @@ import {Text, TextProps} from 'react-native';
 import {useTheme} from '../../hooks/useTheme';
 
 interface ThemedTextProps extends TextProps {
-  variant?: 'h1' | 'h2' | 'h3' | 'h4' | 'body' | 'caption' | 'label';
+  variant?: 'h1' | 'h2' | 'h3' | 'h4' | 'header' | 'body' | 'caption' | 'label';
   color?:
     | 'primary'
     | 'secondary'
@@ -43,6 +43,11 @@ export const ThemedText: React.FC<ThemedTextProps> = ({
       fontSize: typography.fontSize.xl,
       lineHeight: typography.fontSize.xl * typography.lineHeight.normal,
       fontWeight: typography.fontWeight.semiBold,
+    },
+    header: {
+      fontSize: typography.fontSize.lg,
+      fontWeight: typography.fontWeight.bold,
+      lineHeight: typography.fontSize.lg * typography.lineHeight.normal,
     },
     body: {
       fontSize: typography.fontSize.base,

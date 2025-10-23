@@ -41,7 +41,7 @@ export const useAuth = () => {
 
   // Verify OTP mutation
   const verifyOTPMutation = useMutation({
-    mutationFn: (credentials: VerifyOTPCredentials) => authService.verifyOTP(credentials),
+  mutationFn: (credentials: VerifyOTPCredentials) => authService.verifyOTP(credentials),
     onSuccess: (data) => {
       queryClient.setQueryData([QUERY_KEY_CURRENT_TOKEN], data.data.accessToken);
     },

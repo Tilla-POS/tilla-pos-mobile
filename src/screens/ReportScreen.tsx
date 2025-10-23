@@ -18,7 +18,7 @@ const ReportScreen = () => {
   ];
 
   return (
-    <ThemedView background="secondary" style={styles.container}>
+    <ThemedView background="primary" style={styles.container}>
       <ScrollView>
         {/* Theme Selection */}
         <View style={[styles.section, {marginTop: spacing[4]}]}>

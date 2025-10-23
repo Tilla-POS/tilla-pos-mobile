@@ -35,10 +35,13 @@ api.interceptors.request.use(
 
 // Response interceptor to handle token refresh
 api.interceptors.response.use(
-  response => response,
+  response => {
+    console.log('API Response:', response);
+    return response;
+  },
   async error => {
     const originalRequest = error.config;
-
+    console.log('API Error Response:', error.response);
     if (error.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
 
@@ -52,7 +55,9 @@ api.interceptors.response.use(
         );
 
         const {data} = response.data;
+        console.log('API Refresh Token Response:', data);
         await AsyncStorage.setItem('accessToken', data.accessToken);
+        await AsyncStorage.setItem('refreshToken', data.refreshToken);
 
         originalRequest.headers.Authorization = `Bearer ${data.accessToken}`;
         return api(originalRequest);

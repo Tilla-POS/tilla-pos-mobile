@@ -188,11 +188,6 @@ export const authService = {
     return response.data;
   },
 
-  getCurrentUser: async (): Promise<User | null> => {
-    const response = await api.get('/users/me');
-    return response.data;
-  },
-
   getAccessToken: async (): Promise<string | null> => {
     return await AsyncStorage.getItem('accessToken');
   },
