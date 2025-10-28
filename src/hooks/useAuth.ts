@@ -16,7 +16,10 @@ export const useAuth = () => {
   const loginMutation = useMutation({
     mutationFn: (credentials: LoginCredentials) => authService.login(credentials),
     onSuccess: (data) => {
-      queryClient.setQueryData([QUERY_KEY_CURRENT_TOKEN], data.data.accessToken);
+      if(data.data && 'accessToken' in data.data && data.data.accessToken) {
+        // If response contains needsOtp, do not set token
+        queryClient.setQueryData([QUERY_KEY_CURRENT_TOKEN], data.data.accessToken);
+      }
     },
   });
 

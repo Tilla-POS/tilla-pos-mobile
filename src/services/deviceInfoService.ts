@@ -1,3 +1,8 @@
+/**
+ * Gathers user's device information
+ * using react-native-device-info library
+ */
+
 import DeviceInfo from 'react-native-device-info';
 import {Platform} from 'react-native';
 

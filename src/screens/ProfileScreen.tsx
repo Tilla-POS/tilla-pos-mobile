@@ -20,6 +20,7 @@ import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {MainStackParamList} from '../navigation/MainStack';
 import {USER_PROFILE_SCREEN} from './UserProfileScreen';
 import {BUSINESS_PROFILE_SCREEN} from './BusinessProfileScreen';
+import {DEVICES_SCREEN} from './DevicesScreen';
 
 export const PROFILE_SCREEN = 'Profile'; // For navigation reference
 
@@ -69,7 +70,7 @@ const ProfileScreen = () => {
             <MenuItem
               title="Devices Management"
               icon={<MonitorSmartphone color={theme.icon.primary} />}
-              onPress={() => {}}
+              onPress={() => navigation.navigate(DEVICES_SCREEN)}
             />
           </MenuGroup>
           <MenuGroup title="Subscription">

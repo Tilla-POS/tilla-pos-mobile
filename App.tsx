@@ -7,6 +7,7 @@ import RootNavigator from './src/navigation/RootNavigator';
 import {ThemeProvider} from './src/context/ThemeContext';
 import {Provider} from 'react-redux';
 import {store} from './src/redux/store';
+import {setQueryClientRef} from './src/services/api';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -20,6 +21,9 @@ const queryClient = new QueryClient({
     },
   },
 });
+
+// Set the query client reference for API interceptor
+setQueryClientRef(queryClient);
 
 function AppContent() {
   const {theme, isDark, typography} = useTheme();

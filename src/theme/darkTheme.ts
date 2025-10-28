@@ -42,6 +42,7 @@ export const darkTheme: Theme = {
     secondary: colors.gray[400],
     tertiary: colors.gray[500],
     inverse: colors.gray[900],
+    danger: colors.error.main,
   },
 
   // Primary color variants
@@ -92,6 +93,11 @@ export const darkTheme: Theme = {
       background: 'transparent',
       text: colors.primary[400],
       border: 'transparent',
+    },
+    danger: {
+      background: colors.error.main,
+      text: colors.white,
+      border: colors.error.main,
     },
   },
 

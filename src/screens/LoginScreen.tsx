@@ -8,6 +8,7 @@ import {ThemedInput} from '../components/ui/ThemedInput';
 import {ThemedButton} from '../components/ui/ThemedButton';
 import {LogIn} from 'lucide-react-native';
 import { REGISTER_SCREEN } from './RegisterScreen';
+import { OTP_SCREEN } from './OTPScreen';
 
 export const LOGIN_SCREEN = 'Login'; // For navigation reference
 
@@ -30,7 +31,13 @@ const LoginScreen = ({navigation}: any) => {
     }
 
     try {
-      await login({email, password});
+      const res = await login({email, password});
+      // Handle needs OTP scenario
+      if (res.data && 'needsOtp' in res.data && res.data.needsOtp) {
+        console.log('OTP required for login');
+        // Navigate to OTP screen or show OTP prompt
+        navigation.navigate(OTP_SCREEN, {email});
+      }
     } catch (error: any) {
       console.error('Login error:', error);
       setErrors({

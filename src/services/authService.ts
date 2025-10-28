@@ -4,21 +4,7 @@ import {deviceInfoService} from './deviceInfoService';
 import {locationService} from './locationService';
 import {User} from './userService';
 import {Business} from './businessService';
-
-export interface Device {
-  name: string;
-  type: string;
-  brand: string;
-  model: string;
-  deviceId: string;
-  appVersion: string;
-  isEmulator: boolean;
-  isTablet: boolean;
-  systemName: string;
-  systemVersion: string;
-  userAgent: string;
-  trusted: boolean;
-}
+import { BaseDevice } from './devicesService';
 
 export interface Location {
   country: string;
@@ -49,6 +35,10 @@ export interface AuthResponse {
   expiresIn: number;
 }
 
+export interface NeedOTPResponse {
+  needsOtp: boolean;
+}
+
 export interface FileData {
   uri: string;
   name: string;
@@ -73,14 +63,14 @@ export interface VerifyOTPCredentials {
 export const authService = {
   login: async (
     credentials: LoginCredentials,
-  ): Promise<ApiResponse<AuthResponse>> => {
+  ): Promise<ApiResponse<AuthResponse | NeedOTPResponse>> => {
     // Get device info
     const deviceInfo = await deviceInfoService.getDeviceInfo();
 
     // Get location (try GPS first, fallback to IP)
     let locationInfo = await locationService.getCompleteLocation();
 
-    const device: Device = {
+    const device: BaseDevice = {
       name: deviceInfo.deviceName || 'Unknown',
       type: deviceInfo.deviceType,
       brand: deviceInfo.brand,
@@ -121,16 +111,16 @@ export const authService = {
       };
     }
 
-    const response = await api.post<ApiResponse<AuthResponse>>(
+    const response = await api.post<ApiResponse<AuthResponse | NeedOTPResponse>>(
       '/auth/sign-in',
       {...credentials, device, location},
     );
     const {data} = response.data;
-
-    await AsyncStorage.setItem('accessToken', data.accessToken);
-    await AsyncStorage.setItem('refreshToken', data.refreshToken);
-    await AsyncStorage.setItem('tokenType', data.tokenType);
-    await AsyncStorage.setItem('expiresIn', data.expiresIn.toString());
+    console.log('authService.login: Login response data:', data);
+    if (data instanceof Object && 'accessToken' in data) {
+      await AsyncStorage.setItem('accessToken', data.accessToken);
+      await AsyncStorage.setItem('refreshToken', data.refreshToken);
+    }
 
     return response.data;
   },
@@ -153,7 +143,7 @@ export const authService = {
     } catch (error) {
       console.log('Logout error:', error);
     } finally {
-      await AsyncStorage.multiRemove(['accessToken', 'refreshToken', 'user']);
+      await AsyncStorage.multiRemove(['accessToken', 'refreshToken']);
     }
   },
 
@@ -201,7 +191,7 @@ export const authService = {
     // Get location (try GPS first, fallback to IP)
     let locationInfo = await locationService.getCompleteLocation();
 
-    const device: Device = {
+    const device: BaseDevice = {
       name: deviceInfo.deviceName || 'Unknown',
       type: deviceInfo.deviceType,
       brand: deviceInfo.brand,

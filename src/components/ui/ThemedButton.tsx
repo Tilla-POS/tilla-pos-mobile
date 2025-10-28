@@ -4,16 +4,20 @@ import {
   TouchableOpacityProps,
   StyleSheet,
   ActivityIndicator,
+  View,
 } from 'react-native';
 import {useTheme} from '../../hooks/useTheme';
 import {ThemedText} from './ThemedText';
+import {icons} from 'lucide-react-native';
+import {ThemedIcon} from './ThemedIcon';
 
 interface ThemedButtonProps extends TouchableOpacityProps {
   title: string;
-  variant?: 'primary' | 'secondary' | 'ghost';
-  size?: 'sm' | 'md' | 'lg';
+  variant?: 'primary' | 'secondary' | 'ghost' | 'danger';
+  size?: 'xs' | 'sm' | 'md' | 'lg';
   loading?: boolean;
   fullWidth?: boolean;
+  icon?: keyof typeof icons;
 }
 
 export const ThemedButton: React.FC<ThemedButtonProps> = ({
@@ -24,11 +28,16 @@ export const ThemedButton: React.FC<ThemedButtonProps> = ({
   fullWidth = false,
   style,
   disabled,
+  icon,
   ...props
 }) => {
   const {theme, spacing, radius} = useTheme();
 
   const sizeStyles = {
+    xs: {
+      paddingVertical: spacing[1],
+      paddingHorizontal: spacing[2],
+    },
     sm: {
       paddingVertical: spacing[2],
       paddingHorizontal: spacing[3],
@@ -65,9 +74,17 @@ export const ThemedButton: React.FC<ThemedButtonProps> = ({
       {loading ? (
         <ActivityIndicator color={buttonColors.text} />
       ) : (
-        <ThemedText weight="semiBold" style={{color: buttonColors.text}}>
-          {title}
-        </ThemedText>
+        <View style={[styles.contentContainer, icon && {gap: spacing[2]}]}>
+          {icon && (
+            <ThemedIcon
+              name={icon}
+              size={size === 'sm' ? 'sm' : size === 'lg' ? 'lg' : 'md'}
+            />
+          )}
+          <ThemedText weight="semiBold" style={{color: buttonColors.text}}>
+            {title}
+          </ThemedText>
+        </View>
       )}
     </TouchableOpacity>
   );
@@ -84,5 +101,9 @@ const styles = StyleSheet.create({
   },
   disabled: {
     opacity: 0.5,
+  },
+  contentContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
 });
