@@ -79,30 +79,30 @@ const BusinessProfileScreen = () => {
           <View style={{gap: spacing[4]}}>
             <MenuGroup title="Contact Information">
               <InfoItem
-                label="Email Address"
-                value={myBusiness.shopkeeper.email || 'N/A'}
+                title="Email Address"
+                subtitle={myBusiness.shopkeeper.email || 'N/A'}
                 icon={<ThemedIcon name="Mail" />}
               />
               <InfoItem
-                label="Phone Number"
-                value={myBusiness.shopkeeper.phone || 'N/A'}
+                title="Phone Number"
+                subtitle={myBusiness.shopkeeper.phone || 'N/A'}
                 icon={<ThemedIcon name="Phone" />}
               />
               <InfoItem
-                label="Address"
-                value={'N/A'}
+                title="Address"
+                subtitle={'N/A'}
                 icon={<ThemedIcon name="MapPinCheckInside" />}
               />
             </MenuGroup>
             <MenuGroup title="Business Detail">
               <InfoItem
-                label="Business Type"
-                value={myBusiness.businessType.name}
+                title="Business Type"
+                subtitle={myBusiness.businessType.name}
                 icon={<ThemedIcon name="Store" />}
               />
               <InfoItem
-                label="Currency"
-                value={myBusiness.currency || 'N/A'}
+                title="Currency"
+                subtitle={myBusiness.currency || 'N/A'}
                 icon={<ThemedIcon name="DollarSign" />}
               />
             </MenuGroup>

@@ -4,7 +4,7 @@ export const lightTheme = {
   // Background colors
   background: {
     primary: colors.white,
-    secondary: colors.gray[50],
+    secondary: colors.gray[100],
     tertiary: colors.gray[100],
     elevated: colors.white,
     overlay: 'rgba(0, 0, 0, 0.5)',

@@ -83,30 +83,30 @@ const UserProfileScreen = () => {
             <View style={{gap: spacing[4]}}>
               <MenuGroup title="Profile Information">
                 <InfoItem
-                  label="User Name"
-                  value={currentUser.username || 'N/A'}
+                  title="User Name"
+                  subtitle={currentUser.username || 'N/A'}
                   icon={<ThemedIcon name="User" />}
                 />
                 <InfoItem
-                  label="Email Address"
-                  value={currentUser.email || 'N/A'}
+                  title="Email Address"
+                  subtitle={currentUser.email || 'N/A'}
                   icon={<ThemedIcon name="Mail" />}
                 />
                 <InfoItem
-                  label="Phone Number"
-                  value={currentUser.phone || 'N/A'}
+                  title="Phone Number"
+                  subtitle={currentUser.phone || 'N/A'}
                   icon={<ThemedIcon name="Phone" />}
                 />
               </MenuGroup>
               <MenuGroup title="Business Information">
                 <InfoItem
-                  label="Business Name"
-                  value={currentUser.business?.name || 'N/A'}
+                  title="Business Name"
+                  subtitle={currentUser.business?.name || 'N/A'}
                   icon={<ThemedIcon name="BriefcaseBusiness" />}
                 />
                 <InfoItem
-                  label="Business Address"
-                  value={currentUser.business?.slug || 'N/A'}
+                  title="Business Address"
+                  subtitle={currentUser.business?.slug || 'N/A'}
                   icon={<ThemedIcon name="MapPinCheckInside" />}
                 />
               </MenuGroup>

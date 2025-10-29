@@ -116,7 +116,6 @@ export const authService = {
       {...credentials, device, location},
     );
     const {data} = response.data;
-    console.log('authService.login: Login response data:', data);
     if (data instanceof Object && 'accessToken' in data) {
       await AsyncStorage.setItem('accessToken', data.accessToken);
       await AsyncStorage.setItem('refreshToken', data.refreshToken);

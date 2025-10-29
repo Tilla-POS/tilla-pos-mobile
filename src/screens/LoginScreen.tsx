@@ -1,48 +1,52 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {KeyboardAvoidingView, Platform, StyleSheet, View} from 'react-native';
+import {useForm} from 'react-hook-form';
+import {zodResolver} from '@hookform/resolvers/zod';
+import * as z from 'zod';
 import {useAuth} from '../hooks/useAuth';
 import {useTheme} from '../hooks/useTheme';
 import {ThemedView} from '../components/ui/ThemedView';
 import {ThemedText} from '../components/ui/ThemedText';
-import {ThemedInput} from '../components/ui/ThemedInput';
 import {ThemedButton} from '../components/ui/ThemedButton';
+import {ControlledThemedInput} from '../components/form/ControlledThemedInput';
 import {LogIn} from 'lucide-react-native';
-import { REGISTER_SCREEN } from './RegisterScreen';
-import { OTP_SCREEN } from './OTPScreen';
+import {REGISTER_SCREEN} from './RegisterScreen';
+import {OTP_SCREEN} from './OTPScreen';
 
-export const LOGIN_SCREEN = 'Login'; // For navigation reference
+export const LOGIN_SCREEN = 'Login';
+
+// Validation schema
+const loginSchema = z.object({
+  email: z.email('Invalid email address').min(1, 'Email is required'),
+  password: z.string().min(6, 'Password must be at least 6 characters'),
+});
+
+type LoginFormData = z.infer<typeof loginSchema>;
 
 const LoginScreen = ({navigation}: any) => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [errors, setErrors] = useState<any>({});
   const {login, loginLoading} = useAuth();
   const {theme} = useTheme();
+  const [generalError, setGeneralError] = React.useState<string | null>(null);
 
-  const handleLogin = async () => {
-    setErrors({});
+  const {control, handleSubmit} = useForm<LoginFormData>({
+    resolver: zodResolver(loginSchema),
+    defaultValues: {
+      email: '',
+      password: '',
+    },
+  });
 
-    if (!email || !password) {
-      setErrors({
-        email: !email ? 'Email is required' : undefined,
-        password: !password ? 'Password is required' : undefined,
-      });
-      return;
-    }
+  const onSubmit = async (data: LoginFormData) => {
+    setGeneralError(null);
 
     try {
-      const res = await login({email, password});
-      // Handle needs OTP scenario
+      const res = await login(data);
       if (res.data && 'needsOtp' in res.data && res.data.needsOtp) {
-        console.log('OTP required for login');
-        // Navigate to OTP screen or show OTP prompt
-        navigation.navigate(OTP_SCREEN, {email});
+        navigation.navigate(OTP_SCREEN, {email: data.email});
       }
     } catch (error: any) {
       console.error('Login error:', error);
-      setErrors({
-        general: error.response?.data?.message || 'Invalid credentials',
-      });
+      setGeneralError(error.response?.data?.message || 'Invalid credentials');
     }
   };
 
@@ -69,42 +73,34 @@ const LoginScreen = ({navigation}: any) => {
         </View>
 
         <View style={styles.form}>
-          <ThemedInput
+          <ControlledThemedInput
+            control={control}
+            name="email"
             label="Email"
-            value={email}
-            onChangeText={text => {
-              setEmail(text);
-              setErrors({...errors, email: undefined});
-            }}
             autoCapitalize="none"
             keyboardType="email-address"
             editable={!loginLoading}
-            error={errors.email}
           />
 
-          <ThemedInput
+          <ControlledThemedInput
+            control={control}
+            name="password"
             label="Password"
-            value={password}
-            onChangeText={text => {
-              setPassword(text);
-              setErrors({...errors, password: undefined});
-            }}
             secureTextEntry
             editable={!loginLoading}
-            error={errors.password}
           />
 
-          {errors.general && (
+          {generalError && (
             <ThemedText
               variant="caption"
               style={[styles.error, {color: theme.error.main}]}>
-              {errors.general}
+              {generalError}
             </ThemedText>
           )}
 
           <ThemedButton
             title="Login"
-            onPress={handleLogin}
+            onPress={handleSubmit(onSubmit)}
             loading={loginLoading}
             fullWidth
             style={styles.loginButton}

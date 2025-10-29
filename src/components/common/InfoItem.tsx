@@ -4,12 +4,12 @@ import {ThemedText} from '../ui/ThemedText';
 
 interface InfoItemProps {
   // Define your props here
-  label: string;
-  value: string;
+  title: string;
+  subtitle: string;
   icon: React.ReactNode;
 }
 
-const InfoItem: React.FC<InfoItemProps> = ({label, value, icon}) => {
+const InfoItem: React.FC<InfoItemProps> = ({title, subtitle, icon}) => {
   const {theme, radius, spacing} = useTheme();
 
   return (
@@ -29,8 +29,8 @@ const InfoItem: React.FC<InfoItemProps> = ({label, value, icon}) => {
         {icon}
       </View>
       <View>
-        <ThemedText weight="semiBold">{label}</ThemedText>
-        <ThemedText variant="caption" color="tertiary" weight="regular">{value}</ThemedText>
+        <ThemedText weight="semiBold">{title}</ThemedText>
+        <ThemedText variant="caption" color="tertiary" weight="regular">{subtitle}</ThemedText>
       </View>
     </View>
   );

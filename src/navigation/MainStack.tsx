@@ -8,6 +8,8 @@ import BusinessProfileScreen, {
   BUSINESS_PROFILE_SCREEN,
 } from '../screens/BusinessProfileScreen';
 import DevicesScreen, {DEVICES_SCREEN} from '../screens/DevicesScreen';
+import {BottomSheetProvider, useBottomSheet} from '../context/BottomSheetContext';
+import {ThemedBottomSheet} from '../components/ui';
 
 export type MainStackParamList = {
   MainTabs: undefined;
@@ -18,7 +20,7 @@ export type MainStackParamList = {
 
 const Stack = createNativeStackNavigator<MainStackParamList>();
 
-const MainStack = () => {
+const MainStackNavigator = () => {
   return (
     <Stack.Navigator
       screenOptions={{
@@ -47,6 +49,31 @@ const MainStack = () => {
         }}
       />
     </Stack.Navigator>
+  );
+};
+
+const MainStackWithBottomSheet = () => {
+  const {bottomSheetRef, state} = useBottomSheet();
+
+  return (
+    <>
+      <MainStackNavigator />
+      <ThemedBottomSheet
+        ref={bottomSheetRef}
+        title={state.title}
+        snapPoints={state.snapPoints || ['50%', '90%']}
+        onClose={() => console.log('Bottom sheet closed')}>
+        {state.content}
+      </ThemedBottomSheet>
+    </>
+  );
+};
+
+const MainStack = () => {
+  return (
+    <BottomSheetProvider>
+      <MainStackWithBottomSheet />
+    </BottomSheetProvider>
   );
 };
 
