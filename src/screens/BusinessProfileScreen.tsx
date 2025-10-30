@@ -6,21 +6,22 @@ import {
   StyleSheet,
   View,
 } from 'react-native';
-import {ThemedView} from '../components/ui/ThemedView';
-import {ThemedIconButton} from '../components/ui/ThemedIconButton';
-import Header from '../components/common/Header';
-import {spacing} from '../theme';
-import {ThemedAvatar} from '../components/ui/ThemedAvatar';
-import {ThemedText} from '../components/ui/ThemedText';
-import MenuGroup from '../components/common/MenuGropu';
-import {ThemedIcon} from '../components/ui/ThemedIcon';
-import InfoItem from '../components/common/InfoItem';
-import {useBusiness} from '../hooks/useBusiness';
-import CommonError from '../components/common/CommonError';
+import {ThemedView} from '@components/ui/ThemedView';
+import {ThemedIconButton} from '@components/ui/ThemedIconButton';
+import Header from '@components/common/Header';
+import {ThemedAvatar} from '@components/ui/ThemedAvatar';
+import {ThemedText} from '@components/ui/ThemedText';
+import MenuGroup from '@components/common/MenuGropu';
+import {ThemedIcon} from '@components/ui/ThemedIcon';
+import InfoItem from '@components/common/InfoItem';
+import {useBusiness} from '@hooks/useBusiness';
+import CommonError from '@components/common/CommonError';
+import {useTheme} from '@hooks/useTheme';
 
 export const BUSINESS_PROFILE_SCREEN = 'BusinessProfileScreen'; // For navigation reference
 
 const BusinessProfileScreen = () => {
+  const {spacing} = useTheme();
   const {
     myBusiness,
     myBusinessLoading,
@@ -65,7 +66,11 @@ const BusinessProfileScreen = () => {
               onRefresh={refetchMyBusiness}
             />
           }>
-          <View style={styles.header}>
+          <View
+            style={[
+              styles.header,
+              {gap: spacing[4], marginVertical: spacing[4]},
+            ]}>
             <ThemedAvatar source={{uri: myBusiness.image}} size={112} />
             <View style={styles.businessInfo}>
               <ThemedText variant="header" weight="bold">
@@ -129,6 +134,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  header: {alignItems: 'center', gap: spacing[4], marginVertical: spacing[4]},
+  header: {alignItems: 'center'},
   businessInfo: {alignItems: 'center'},
 });

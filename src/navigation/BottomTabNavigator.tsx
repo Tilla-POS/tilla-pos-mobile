@@ -11,7 +11,7 @@ import {
 } from 'lucide-react-native';
 import ReportScreen, {REPORT_SCREEN} from '../screens/ReportScreen';
 import CashierScreen, {CASHIER_SCREEN} from '../screens/CashierScreen';
-import InventoryScreen, {INVENTORY_SCREEN} from '../screens/InventoryScreen';
+import InventoryScreen, {INVENTORY_SCREEN} from '../screens/inventory/InventoryScreen';
 
 const Tab = createBottomTabNavigator();
 

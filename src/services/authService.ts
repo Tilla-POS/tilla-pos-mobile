@@ -5,6 +5,7 @@ import {locationService} from './locationService';
 import {User} from './userService';
 import {Business} from './businessService';
 import { BaseDevice } from './devicesService';
+import { FileData } from '../lib/interfaces/FileData';
 
 export interface Location {
   country: string;
@@ -37,12 +38,6 @@ export interface AuthResponse {
 
 export interface NeedOTPResponse {
   needsOtp: boolean;
-}
-
-export interface FileData {
-  uri: string;
-  name: string;
-  type: string;
 }
 
 export interface CreateBusinessCredentials {

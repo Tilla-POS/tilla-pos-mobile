@@ -1,8 +1,8 @@
 import React from 'react';
 import {SafeAreaView, StyleSheet, View} from 'react-native';
-import {ThemedView} from '../components/ui/ThemedView';
-import Header from '../components/common/Header';
-import MenuItem from '../components/common/MenuItem';
+import {ThemedView} from '@components/ui/ThemedView';
+import Header from '@components/common/Header';
+import MenuItem from '@components/common/MenuItem';
 import {
   Bell,
   CreditCard,
@@ -13,11 +13,11 @@ import {
   User,
   UsersRound,
 } from 'lucide-react-native';
-import {useTheme} from '../hooks/useTheme';
-import MenuGroup from '../components/common/MenuGropu';
+import {useTheme} from '@hooks/useTheme';
+import MenuGroup from '@components/common/MenuGropu';
 import {useNavigation} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
-import {MainStackParamList} from '../navigation/MainStack';
+import {MainStackParamList} from '@navigation/MainStack';
 import {USER_PROFILE_SCREEN} from './UserProfileScreen';
 import {BUSINESS_PROFILE_SCREEN} from './BusinessProfileScreen';
 import {DEVICES_SCREEN} from './DevicesScreen';

@@ -1,11 +1,11 @@
 import React, {useState} from 'react';
 import {KeyboardAvoidingView, Platform, StyleSheet, View} from 'react-native';
-import {useAuth} from '../hooks/useAuth';
-import {useTheme} from '../hooks/useTheme';
-import {ThemedView} from '../components/ui/ThemedView';
-import {ThemedText} from '../components/ui/ThemedText';
-import {ThemedInput} from '../components/ui/ThemedInput';
-import {ThemedButton} from '../components/ui/ThemedButton';
+import {useAuth} from '@hooks/useAuth';
+import {useTheme} from '@hooks/useTheme';
+import {ThemedView} from '@components/ui/ThemedView';
+import {ThemedText} from '@components/ui/ThemedText';
+import {ThemedInput} from '@components/ui/ThemedInput';
+import {ThemedButton} from '@components/ui/ThemedButton';
 import {UserPlus} from 'lucide-react-native';
 import { CREATE_BUSINESS_SCREEN } from './CreateBusinessScreen';
 import { LOGIN_SCREEN } from './LoginScreen';

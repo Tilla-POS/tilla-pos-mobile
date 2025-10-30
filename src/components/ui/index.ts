@@ -6,6 +6,8 @@ export {ThemedButton} from './ThemedButton';
 export {ThemedCard} from './ThemedCard';
 export {ThemedCheckBox} from './ThemedCheckBox';
 export {ThemedFab} from './ThemedFab';
+export {ThemedFileUpload} from './ThemedFileUpload';
+export type {UploadedFile} from './ThemedFileUpload';
 export {ThemedIcon} from './ThemedIcon';
 export {ThemedIconButton} from './ThemedIconButton';
 export {ThemedInput} from './ThemedInput';

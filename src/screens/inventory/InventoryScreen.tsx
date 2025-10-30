@@ -7,14 +7,14 @@ import {
   View,
 } from 'react-native';
 import {TabView, SceneMap, TabBar} from 'react-native-tab-view';
-import {ThemedView, ThemedFab, ThemedIcon} from '../components/ui';
-import Header from '../components/common/Header';
-import {useTheme} from '../hooks/useTheme';
-import {useBottomSheet} from '../context/BottomSheetContext';
-import ItemsTabScreen from './ItemsTabScreen';
-import CategoriesTabScreen from './CategoriesTabScreen';
-import ModifiersTabScreen from './ModifiersTabScreen';
-import InfoItem from '../components/common/InfoItem';
+import {ThemedView, ThemedFab, ThemedIcon} from '@components/ui';
+import Header from '@components/common/Header';
+import {useTheme} from '@hooks/useTheme';
+import {useBottomSheet} from '@context/BottomSheetContext';
+import ItemsTabScreen from './items/ItemsTabScreen';
+import CategoriesTabScreen from './categories/CategoriesTabScreen';
+import ModifiersTabScreen from './modifiers/ModifiersTabScreen';
+import InfoItem from '@components/common/InfoItem';
 
 export const INVENTORY_SCREEN = 'Inventory'; // For navigation reference
 

@@ -7,15 +7,15 @@ import {
   TextInput,
   TouchableOpacity,
 } from 'react-native';
-import {useTheme} from '../hooks/useTheme';
-import {ThemedView} from '../components/ui/ThemedView';
-import {ThemedText} from '../components/ui/ThemedText';
-import {ThemedButton} from '../components/ui/ThemedButton';
+import {useTheme} from '@hooks/useTheme';
+import {ThemedView} from '@components/ui/ThemedView';
+import {ThemedText} from '@components/ui/ThemedText';
+import {ThemedButton} from '@components/ui/ThemedButton';
 import {Shield, ArrowLeft} from 'lucide-react-native';
-import {authService} from '../services/authService';
-import {useAuth} from '../hooks/useAuth';
+import {authService} from '@services/authService';
+import {useAuth} from '@hooks/useAuth';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {AuthStackParamList} from '../navigation/AuthStack';
+import {AuthStackParamList} from '@navigation/AuthStack';
 
 export const OTP_SCREEN = 'OTP'; // For navigation reference
 

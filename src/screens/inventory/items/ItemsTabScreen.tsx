@@ -1,6 +1,6 @@
 import {StyleSheet} from 'react-native';
-import {ThemedText, ThemedView} from '../components/ui';
-import {useTheme} from '../hooks/useTheme';
+import {ThemedText, ThemedView} from '@components/ui';
+import {useTheme} from '@hooks/useTheme';
 
 const ItemsTabScreen = () => {
   const {spacing} = useTheme();

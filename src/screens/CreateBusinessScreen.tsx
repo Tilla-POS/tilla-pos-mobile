@@ -13,17 +13,17 @@ import {
   ImagePickerResponse,
   Asset,
 } from 'react-native-image-picker';
-import {ThemedView} from '../components/ui/ThemedView';
-import {ThemedText} from '../components/ui/ThemedText';
-import {ThemedInput} from '../components/ui/ThemedInput';
-import {ThemedButton} from '../components/ui/ThemedButton';
-import {useTheme} from '../hooks/useTheme';
-import {ThemedSelect} from '../components/ui/ThemedSelect';
-import {useBusinessTypeOptions} from '../hooks/useBusinessType';
+import {ThemedView} from '@components/ui/ThemedView';
+import {ThemedText} from '@components/ui/ThemedText';
+import {ThemedInput} from '@components/ui/ThemedInput';
+import {ThemedButton} from '@components/ui/ThemedButton';
+import {useTheme} from '@hooks/useTheme';
+import {ThemedSelect} from '@components/ui/ThemedSelect';
+import {useBusinessTypeOptions} from '@hooks/useBusinessType';
 import {OTP_SCREEN} from './OTPScreen';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {AuthStackParamList} from '../navigation/AuthStack';
-import {useAuth} from '../hooks/useAuth';
+import {AuthStackParamList} from '@navigation/AuthStack';
+import {useAuth} from '@hooks/useAuth';
 
 export const CREATE_BUSINESS_SCREEN = 'CreateBusiness'; // For navigation reference
 

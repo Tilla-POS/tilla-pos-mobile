@@ -6,17 +6,17 @@ import {
   StyleSheet,
   View,
 } from 'react-native';
-import {ThemedView} from '../components/ui/ThemedView';
-import Header from '../components/common/Header';
-import {ThemedButton} from '../components/ui/ThemedButton';
-import {ThemedText} from '../components/ui/ThemedText';
-import {ThemedIcon} from '../components/ui/ThemedIcon';
-import {useTheme} from '../hooks/useTheme';
-import MenuGroup from '../components/common/MenuGropu';
-import DeviceInfoItem from '../components/specifics/devices/DeviceInfoItem';
-import {useDevice} from '../hooks/useDevice';
-import CommonError from '../components/common/CommonError';
-import {Device} from '../services/devicesService';
+import {ThemedView} from '@components/ui/ThemedView';
+import Header from '@components/common/Header';
+import {ThemedButton} from '@components/ui/ThemedButton';
+import {ThemedText} from '@components/ui/ThemedText';
+import {ThemedIcon} from '@components/ui/ThemedIcon';
+import {useTheme} from '@hooks/useTheme';
+import MenuGroup from '@components/common/MenuGropu';
+import DeviceInfoItem from '@components/specifics/devices/DeviceInfoItem';
+import {useDevice} from '@hooks/useDevice';
+import CommonError from '@components/common/CommonError';
+import {Device} from '@services/devicesService';
 
 export const DEVICES_SCREEN = 'DevicesScreen'; // For navigation reference
 

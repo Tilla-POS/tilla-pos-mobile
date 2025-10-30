@@ -6,21 +6,24 @@ import {
   StyleSheet,
   View,
 } from 'react-native';
-import {ThemedView} from '../components/ui/ThemedView';
-import Header from '../components/common/Header';
-import {ThemedIconButton} from '../components/ui/ThemedIconButton';
-import {ThemedText} from '../components/ui/ThemedText';
-import {ThemedAvatar} from '../components/ui/ThemedAvatar';
-import {spacing} from '../theme';
-import MenuGroup from '../components/common/MenuGropu';
-import InfoItem from '../components/common/InfoItem';
-import {ThemedIcon} from '../components/ui/ThemedIcon';
-import {useUser} from '../hooks/useUser';
-import CommonError from '../components/common/CommonError';
+import Header from '@components/common/Header';
+import {
+  ThemedView,
+  ThemedIconButton,
+  ThemedText,
+  ThemedAvatar,
+  ThemedIcon,
+} from '@components/ui';
+import MenuGroup from '@components/common/MenuGropu';
+import InfoItem from '@components/common/InfoItem';
+import {useUser} from '@hooks/useUser';
+import CommonError from '@components/common/CommonError';
+import {useTheme} from '@hooks/useTheme';
 
 export const USER_PROFILE_SCREEN = 'UserProfile'; // For navigation reference
 
 const UserProfileScreen = () => {
+  const {spacing} = useTheme();
   const {
     currentUser,
     currentUserLoading,
@@ -69,7 +72,11 @@ const UserProfileScreen = () => {
             />
           }>
           <View>
-            <View style={styles.header}>
+            <View
+              style={[
+                styles.header,
+                {gap: spacing[4], marginVertical: spacing[4]},
+              ]}>
               <ThemedAvatar size={112} />
               <View style={styles.userInfo}>
                 <ThemedText variant="header" weight="bold">
@@ -135,7 +142,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  header: {alignItems: 'center', gap: spacing[4], marginVertical: spacing[4]},
+  header: {alignItems: 'center'},
   userInfo: {alignItems: 'center'},
   avatar: {width: '100%', height: '100%', resizeMode: 'cover'},
   avatarPlaceHolder: {textAlign: 'center', fontSize: 12},

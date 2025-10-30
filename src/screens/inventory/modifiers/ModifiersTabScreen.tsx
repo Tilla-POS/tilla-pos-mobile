@@ -1,21 +1,21 @@
 import {StyleSheet} from 'react-native';
-import {ThemedText, ThemedView} from '../components/ui';
-import {useTheme} from '../hooks/useTheme';
+import {ThemedText, ThemedView} from '@components/ui';
+import {useTheme} from '@hooks/useTheme';
 
-const CategoriesTabScreen = () => {
+const ModifierTabScreen = () => {
   const {spacing} = useTheme();
   return (
     <ThemedView
       background="primary"
       style={[styles.tabContent, {padding: spacing[4]}]}>
       <ThemedText variant="body" color="secondary">
-        Categories content coming soon...
+        Modifiers content coming soon...
       </ThemedText>
     </ThemedView>
   );
 };
 
-export default CategoriesTabScreen;
+export default ModifierTabScreen;
 
 const styles = StyleSheet.create({
   tabContent: {
