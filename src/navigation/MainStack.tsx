@@ -10,12 +10,14 @@ import BusinessProfileScreen, {
 import DevicesScreen, {DEVICES_SCREEN} from '../screens/DevicesScreen';
 import {BottomSheetProvider, useBottomSheet} from '../context/BottomSheetContext';
 import {ThemedBottomSheet} from '../components/ui';
+import CreateCategoryScreen, { CREATE_CATEGORY_SCREEN } from '@/screens/inventory/categories/CreateCategoryScreen';
 
 export type MainStackParamList = {
   MainTabs: undefined;
   [USER_PROFILE_SCREEN]: undefined;
   [BUSINESS_PROFILE_SCREEN]: undefined;
   [DEVICES_SCREEN]: undefined;
+  [CREATE_CATEGORY_SCREEN]: undefined;
 };
 
 const Stack = createNativeStackNavigator<MainStackParamList>();
@@ -44,6 +46,13 @@ const MainStackNavigator = () => {
       <Stack.Screen
         name={DEVICES_SCREEN}
         component={DevicesScreen}
+        options={{
+          presentation: 'card',
+        }}
+      />
+      <Stack.Screen
+        name={CREATE_CATEGORY_SCREEN}
+        component={CreateCategoryScreen}
         options={{
           presentation: 'card',
         }}

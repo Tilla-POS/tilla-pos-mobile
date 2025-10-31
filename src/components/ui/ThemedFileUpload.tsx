@@ -155,15 +155,15 @@ export const ThemedFileUpload: React.FC<ThemedFileUploadProps> = ({
   const sizeStyles = {
     sm: {
       height: 80,
-      iconSize: 24,
+      iconSize: 16,
     },
     md: {
       height: 120,
-      iconSize: 32,
+      iconSize: 24,
     },
     lg: {
       height: 160,
-      iconSize: 40,
+      iconSize: 32,
     },
   };
 
@@ -305,10 +305,11 @@ export const ThemedFileUpload: React.FC<ThemedFileUploadProps> = ({
           style={[
             styles.uploadArea,
             {
-              height: currentSize.height,
+              // height: currentSize.height,
               backgroundColor: theme.input.background,
               borderColor: theme.border.primary,
               borderRadius: radius.md,
+              padding: spacing[4],
             },
             disabled && styles.disabled,
           ]}
@@ -388,7 +389,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderWidth: 2,
     borderStyle: 'dashed',
-    gap: 8,
+    gap: 4,
   },
   disabled: {
     opacity: 0.5,

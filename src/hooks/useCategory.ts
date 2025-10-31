@@ -11,7 +11,10 @@ export const useCategoryMutation = () => {
     mutationFn: categoryService.createCategory,
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: [QUERY_KEY_CATEGORIES, QUERY_KEY_CATEGORY],
+        queryKey: [QUERY_KEY_CATEGORIES],
+      });
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEY_CATEGORY],
       });
     },
   });
@@ -20,7 +23,10 @@ export const useCategoryMutation = () => {
     mutationFn: categoryService.updateCategory,
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: [QUERY_KEY_CATEGORIES, QUERY_KEY_CATEGORY],
+        queryKey: [QUERY_KEY_CATEGORIES],
+      });
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEY_CATEGORY],
       });
     },
   });

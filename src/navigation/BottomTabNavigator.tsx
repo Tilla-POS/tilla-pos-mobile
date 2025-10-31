@@ -13,7 +13,15 @@ import ReportScreen, {REPORT_SCREEN} from '../screens/ReportScreen';
 import CashierScreen, {CASHIER_SCREEN} from '../screens/CashierScreen';
 import InventoryScreen, {INVENTORY_SCREEN} from '../screens/inventory/InventoryScreen';
 
-const Tab = createBottomTabNavigator();
+export type BottomTabParamList = {
+  [REPORT_SCREEN]: undefined;
+  [RECEIPTS_SCREEN]: undefined;
+  [CASHIER_SCREEN]: undefined;
+  [INVENTORY_SCREEN]: undefined;
+  [PROFILE_SCREEN]: undefined;
+};
+
+const Tab = createBottomTabNavigator<BottomTabParamList>();
 
 type IconProps = {color: string; size?: number | undefined};
 

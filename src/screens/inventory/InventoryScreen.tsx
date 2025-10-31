@@ -15,6 +15,10 @@ import ItemsTabScreen from './items/ItemsTabScreen';
 import CategoriesTabScreen from './categories/CategoriesTabScreen';
 import ModifiersTabScreen from './modifiers/ModifiersTabScreen';
 import InfoItem from '@components/common/InfoItem';
+import {CREATE_CATEGORY_SCREEN} from './categories/CreateCategoryScreen';
+import {MainStackParamList} from '@/navigation/MainStack';
+import {NativeStackNavigationProp} from 'node_modules/@react-navigation/native-stack/lib/typescript/src/types';
+import {useNavigation} from '@react-navigation/native';
 
 export const INVENTORY_SCREEN = 'Inventory'; // For navigation reference
 
@@ -24,10 +28,13 @@ const renderScene = SceneMap({
   modifiers: ModifiersTabScreen,
 });
 
+type NavigationProp = NativeStackNavigationProp<MainStackParamList>;
+
 const InventoryScreen = () => {
   const layout = useWindowDimensions();
   const {theme, typography, spacing} = useTheme();
   const {openBottomSheet, closeBottomSheet} = useBottomSheet();
+  const navigation = useNavigation<NavigationProp>();
 
   const [index, setIndex] = useState(0);
   const [routes] = useState([
@@ -67,7 +74,11 @@ const InventoryScreen = () => {
   const handleOpenBottomSheet = () => {
     const content = (
       <View style={{gap: spacing[4]}}>
-        <TouchableOpacity onPress={closeBottomSheet}>
+        <TouchableOpacity
+          onPress={() => {
+            closeBottomSheet();
+            navigation.navigate(CREATE_CATEGORY_SCREEN);
+          }}>
           <InfoItem
             icon={<ThemedIcon name="Box" size="md" color="primary" />}
             title="Item"
